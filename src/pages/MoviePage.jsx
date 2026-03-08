@@ -9,10 +9,7 @@ const MoviePage = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedLang, setSelectedLang] = useState("all");
   const [showAll, setShowAll] = useState(false);
-  const ruKeywords = ["трейлер", "русский", "дубляж", "ru", "russian"];
-  const enKeywords = ["trailer", "english", "original", "en", "eng"];
 
   useEffect(() => {
     const loadMovie = async () => {
@@ -55,36 +52,6 @@ const MoviePage = () => {
   }
 
   const rating = movie.rating?.imdb || 0;
-
-  const hasRussian = movie.videos?.some(
-    (v) =>
-      v.name?.toLowerCase().includes("трейлер") ||
-      v.name?.toLowerCase().includes("русский"),
-  );
-
-  const hasEnglish = movie.videos?.some(
-    (v) =>
-      v.name?.toLowerCase().includes("trailer") ||
-      v.name?.toLowerCase().includes("english"),
-  );
-
-  const filteredVideos =
-    movie.videos?.filter((video) => {
-      if (selectedLang === "all") return true;
-      if (selectedLang === "ru") {
-        return (
-          video.name?.toLowerCase().includes("трейлер") ||
-          video.name?.toLowerCase().includes("русский")
-        );
-      }
-      if (selectedLang === "en") {
-        return (
-          video.name?.toLowerCase().includes("trailer") ||
-          video.name?.toLowerCase().includes("english")
-        );
-      }
-      return true;
-    }) || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -165,121 +132,39 @@ const MoviePage = () => {
                     <h3 className="text-lg font-semibold text-white">
                       Трейлеры
                     </h3>
-
-                    <div className="flex gap-2">
-                      {hasRussian && (
-                        <button
-                          onClick={() => setSelectedLang("ru")}
-                          className={`px-3 py-1 rounded-md text-sm transition-colors ${
-                            selectedLang === "ru"
-                              ? "bg-primary text-white"
-                              : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                          }`}
-                        >
-                          Русские
-                        </button>
-                      )}
-                      {hasEnglish && (
-                        <button
-                          onClick={() => setSelectedLang("en")}
-                          className={`px-3 py-1 rounded-md text-sm transition-colors ${
-                            selectedLang === "en"
-                              ? "bg-primary text-white"
-                              : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                          }`}
-                        >
-                          Английские
-                        </button>
-                      )}
+                    {movie.videos.length > 3 && (
                       <button
-                        onClick={() => setSelectedLang("all")}
-                        className={`px-3 py-1 rounded-md text-sm transition-colors ${
-                          selectedLang === "all"
-                            ? "bg-primary text-white"
-                            : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                        }`}
+                        onClick={() => setShowAll(!showAll)}
+                        className="text-primary hover:underline text-sm"
                       >
-                        Все
+                        {showAll
+                          ? "Скрыть"
+                          : `Показать все (${movie.videos.length})`}
                       </button>
-                    </div>
+                    )}
                   </div>
 
                   <div className="space-y-2">
                     {movie.videos
-                      .filter((video) => {
-                        if (selectedLang === "all") return true;
-
-                        const name = video.name?.toLowerCase() || "";
-                        const ruKeywords = [
-                          "трейлер",
-                          "русский",
-                          "дубляж",
-                          "ru",
-                          "russian",
-                        ];
-                        const enKeywords = [
-                          "trailer",
-                          "english",
-                          "original",
-                          "en",
-                          "eng",
-                        ];
-
-                        const isRussian = ruKeywords.some((keyword) =>
-                          name.includes(keyword),
-                        );
-                        const isEnglish = enKeywords.some((keyword) =>
-                          name.includes(keyword),
-                        );
-
-                        if (selectedLang === "ru")
-                          return isRussian && !isEnglish;
-                        if (selectedLang === "en")
-                          return isEnglish && !isRussian;
-
-                        return true;
-                      })
                       .slice(0, showAll ? undefined : 3)
                       .map((video, index) => (
-                        <div
+                        <a
                           key={index}
-                          className="flex items-center justify-between bg-gray-800 rounded-lg p-3"
+                          href={video.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block bg-gray-800 hover:bg-gray-700 rounded-lg p-3 transition-colors"
                         >
-                          <a
-                            href={video.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:underline truncate flex-1"
-                          >
-                            {video.name || "Смотреть трейлер"}
-                          </a>
-                          <span className="text-xs px-2 py-1 bg-gray-700 rounded ml-2 whitespace-nowrap">
-                            {video.name?.toLowerCase().includes("русский") ||
-                            video.name?.toLowerCase().includes("ru")
-                              ? "🇷🇺 RU"
-                              : "🇬🇧 EN"}
-                          </span>
-                        </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-primary hover:underline">
+                              {video.name || "Смотреть трейлер"}
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              {video.site}
+                            </span>
+                          </div>
+                        </a>
                       ))}
-
-                    {movie.videos.filter((v) => {
-                      if (selectedLang === "all") return true;
-                      const name = v.name?.toLowerCase() || "";
-                      if (selectedLang === "ru")
-                        return ruKeywords.some((k) => name.includes(k));
-                      if (selectedLang === "en")
-                        return enKeywords.some((k) => name.includes(k));
-                      return true;
-                    }).length > 3 && (
-                      <button
-                        onClick={() => setShowAll(!showAll)}
-                        className="text-primary hover:underline text-sm mt-2"
-                      >
-                        {showAll
-                          ? "Скрыть"
-                          : `Показать все (${filteredVideos.length})`}
-                      </button>
-                    )}
                   </div>
                 </div>
               )}

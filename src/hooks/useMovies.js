@@ -1,16 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { kinopoiskAPI } from '@/services/api'
+import { useState, useEffect, useCallback } from 'react'
+import { kinopoiskAPI } from '../services/api'
 
 const useMovies = (fetchFunction) => {
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-  
-  const fetchFunctionRef = useRef(fetchFunction)
-  
-  useEffect(() => {
-    fetchFunctionRef.current = fetchFunction
-  }, [fetchFunction])
 
   useEffect(() => {
     let isMounted = true
@@ -19,17 +13,21 @@ const useMovies = (fetchFunction) => {
       try {
         setIsLoading(true)
         setError(null)
-        const data = await fetchFunctionRef.current()
-        if (isMounted) setMovies(data)
+        const data = await fetchFunction()
+        if (isMounted) {
+          setMovies(data || [])
+        }
       } catch (err) {
-        if (isMounted) setError(err.message || 'Ошибка загрузки')
+        if (isMounted) {
+          setError(err.message || 'Ошибка загрузки')
+        }
       } finally {
         if (isMounted) setIsLoading(false)
       }
     }
 
     loadMovies()
-  }, []) 
+  }, [fetchFunction])
 
   return { movies, isLoading, error }
 }

@@ -13,6 +13,14 @@ const GenreFilter = ({ selectedGenre, onGenreChange }) => {
     loadGenres();
   }, []);
 
+  const handleGenreClick = (genreId) => {
+    onGenreChange(genreId);
+    setIsOpen(false);
+  };
+
+  const selectedGenreObj = genres.find((g) => g.id === Number(selectedGenre));
+  const displayName = selectedGenreObj?.genre || "Все жанры";
+
   return (
     <div className="relative">
       <button
@@ -20,12 +28,7 @@ const GenreFilter = ({ selectedGenre, onGenreChange }) => {
         className="w-full px-4 py-3 bg-card-bg text-white rounded-lg border border-gray-700 
                    hover:border-primary transition-colors flex items-center justify-between gap-2"
       >
-        <span className="truncate">
-          {selectedGenre
-            ? genres.find((g) => g.id === Number(selectedGenre))?.genre ||
-              "Жанр"
-            : "Все жанры"}
-        </span>
+        <span className="truncate">{displayName}</span>
         <svg
           className={`w-4 h-4 transition-transform shrink-0 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
@@ -55,10 +58,7 @@ const GenreFilter = ({ selectedGenre, onGenreChange }) => {
           {genres.map((genre) => (
             <button
               key={genre.id}
-              onClick={() => {
-                onGenreChange(genre.id);
-                setIsOpen(false);
-              }}
+              onClick={() => handleGenreClick(genre.id.toString())}
               className="w-full text-left px-4 py-2 text-white hover:bg-gray-700"
             >
               {genre.genre}

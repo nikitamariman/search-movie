@@ -18,10 +18,10 @@ const HomePage = () => {
   const genreMovies = useMoviesByGenre(selectedGenre);
 
   let moviesData;
-  if (searchQuery.trim()) {
-    moviesData = searchMovies;
-  } else if (selectedGenre) {
+  if (selectedGenre) {
     moviesData = genreMovies;
+  } else if (searchQuery.trim()) {
+    moviesData = searchMovies;
   } else {
     moviesData = popularMovies;
   }
@@ -30,12 +30,22 @@ const HomePage = () => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    setSelectedGenre("");
   };
 
   const handleGenreChange = (genreId) => {
     setSelectedGenre(genreId);
-    setSearchQuery("");
+  };
+
+  const getGenreName = (genreId) => {
+    const genreMap = {
+      1: "боевик",
+      2: "комедия",
+      3: "драма",
+      4: "фантастика",
+      5: "триллер",
+      6: "криминал",
+    };
+    return genreMap[genreId] || "выбранный";
   };
 
   return (
@@ -82,7 +92,7 @@ const HomePage = () => {
               {searchQuery.trim()
                 ? `Результаты поиска: "${searchQuery}"`
                 : selectedGenre
-                  ? `Фильмы жанра: ${selectedGenre}`
+                  ? `Фильмы жанра: ${getGenreName(selectedGenre)}`
                   : "Популярные фильмы"}
             </h2>
 
@@ -102,9 +112,11 @@ const HomePage = () => {
                   Фильмы не найдены
                 </h3>
                 <p className="text-gray-400">
-                  {searchQuery.trim()
-                    ? "Попробуйте изменить поисковый запрос"
-                    : "Скоро здесь появятся фильмы"}
+                  {selectedGenre
+                    ? "Нет фильмов в этом жанре"
+                    : searchQuery.trim()
+                      ? "Попробуйте изменить поисковый запрос"
+                      : "Скоро здесь появятся фильмы"}
                 </p>
               </div>
             )}
