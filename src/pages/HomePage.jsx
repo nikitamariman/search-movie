@@ -18,7 +18,18 @@ const HomePage = () => {
   const genreMovies = useMoviesByGenre(selectedGenre);
 
   let moviesData;
-  if (selectedGenre) {
+  if (searchQuery.trim() && selectedGenre) {
+    const searchResults = searchMovies.movies;
+    const genreResults = genreMovies.movies;
+    const combined = searchResults.filter((movie) =>
+      genreResults.some((g) => g.id === movie.id),
+    );
+    moviesData = {
+      movies: combined,
+      isLoading: searchMovies.isLoading || genreMovies.isLoading,
+      error: searchMovies.error || genreMovies.error,
+    };
+  } else if (selectedGenre) {
     moviesData = genreMovies;
   } else if (searchQuery.trim()) {
     moviesData = searchMovies;
