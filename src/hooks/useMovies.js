@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { kinopoiskAPI } from '../services/api'
+import { kinopoiskAPI } from '@/services/api'
 
 const useMovies = (fetchFunction) => {
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   
-  // Используем useRef чтобы избежать зависимости в useEffect
   const fetchFunctionRef = useRef(fetchFunction)
   
   useEffect(() => {
@@ -30,7 +29,7 @@ const useMovies = (fetchFunction) => {
     }
 
     loadMovies()
-  }, []) // Пустой массив - эффект срабатывает только при монтировании
+  }, []) 
 
   return { movies, isLoading, error }
 }
