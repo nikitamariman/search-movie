@@ -1,16 +1,44 @@
-# React + Vite
+# Mariman Movies - Клон Кинопоиска
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Поиск фильмов с возможностью фильтрации по жанрам, детальной информацией и трейлерами.
 
-Currently, two official plugins are available:
+## Демо
+https://nikitamariman.github.io/search-movie/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Технологии
+- React + Vite
+- Tailwind CSS v4
+- React Router
+- Kinopoisk API (unofficial)
 
-## React Compiler
+## Функциональность
+- Поиск фильмов с debounce
+- Фильтрация по жанрам
+- Детальная страница фильма с описанием и трейлерами
+- Адаптивный дизайн
+- Автоматическое переключение на локальные данные при недоступности API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Установка и запуск
 
-## Expanding the ESLint configuration
+git clone https://github.com/ваш-логин/search-movie.git
+cd search-movie
+npm install
+npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Получение API ключа
+1. Зарегистрируйтесь на https://kinopoiskapiunofficial.tech
+2. Скопируйте ключ в файл .env
+3. VITE_KINOPOISK_API_KEY=ваш_ключ_здесь
+
+## Структура проекта
+
+src/
+  components/     - переиспользуемые компоненты
+  pages/          - страницы (главная, страница фильма)
+  hooks/          - кастомные React хуки
+  services/       - работа с API
+  data/           - локальные данные
+  utils/          - константы
+
+## Лицензия
+MIT
