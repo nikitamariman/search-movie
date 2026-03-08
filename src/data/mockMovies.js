@@ -126,7 +126,7 @@ export const mockMovies = [
     year: 2002,
     rating: { imdb: 8.8 },
     poster: {
-      url: "https://st.kp.yandex.net/images/film_iphone/iphone360_329.jpg"
+      url: "https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/e8a6f94f-bf0d-4954-ad09-99ddd4a8dd85/1920x"
     },
     description: "Братство распалось, но Кольцо Всевластья должно быть уничтожено. Фродо и Сэм вынуждены довериться Голлуму, который взялся провести их к врагу. Арагорн, Гимли и Леголас следуют за армией Урук-хаев, захватившей Мерри и Пиппина. Великая битва за Средиземье продолжается.",
     genres: [{ genre: "фэнтези" }, { genre: "приключения" }]
