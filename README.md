@@ -20,7 +20,7 @@ https://nikitamariman.github.io/search-movie/
 
 ## Установка и запуск
 
-git clone https://github.com/ваш-логин/search-movie.git
+git clone https://github.com/nikitamariman/search-movie.git
 cd search-movie
 npm install
 npm run dev
