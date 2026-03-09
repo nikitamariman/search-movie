@@ -8,39 +8,36 @@ const useMovies = (fetchFunction) => {
 
   useEffect(() => {
     let isMounted = true
-
     const loadMovies = async () => {
       try {
         setIsLoading(true)
         setError(null)
         const data = await fetchFunction()
-        if (isMounted) {
-          setMovies(data || [])
-        }
+        if (isMounted) setMovies(data || [])
       } catch (err) {
-        if (isMounted) {
-          setError(err.message || 'Ошибка загрузки')
-        }
+        if (isMounted) setError(err.message || 'Ошибка загрузки')
       } finally {
         if (isMounted) setIsLoading(false)
       }
     }
-
     loadMovies()
+    return () => { isMounted = false }
   }, [fetchFunction])
 
   return { movies, isLoading, error }
 }
 
 export const usePopularMovies = () => {
-  return useMovies(kinopoiskAPI.getPopularMovies.bind(kinopoiskAPI))
+  const fetchPopular = useCallback(() => {
+    return kinopoiskAPI.getPopularMovies()
+  }, [])
+  return useMovies(fetchPopular)
 }
 
 export const useSearchMovies = (query) => {
   const searchFunction = useCallback(() => {
     return kinopoiskAPI.searchMovies(query)
   }, [query])
-
   return useMovies(searchFunction)
 }
 
@@ -49,7 +46,6 @@ export const useMoviesByGenre = (genreId) => {
     if (!genreId) return Promise.resolve([])
     return kinopoiskAPI.getMoviesByGenre(genreId)
   }, [genreId])
-
   return useMovies(fetchFunction)
 }
 
