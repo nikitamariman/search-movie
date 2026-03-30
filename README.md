@@ -18,13 +18,6 @@ https://nikitamariman.github.io/search-movie/
 - Адаптивный дизайн
 - Автоматическое переключение на локальные данные при недоступности API
 
-## Установка и запуск
-
-git clone https://github.com/nikitamariman/search-movie.git
-cd search-movie
-npm install
-npm run dev
-
 ## Получение API ключа
 1. Зарегистрируйтесь на https://kinopoiskapiunofficial.tech
 2. Скопируйте ключ в файл .env
